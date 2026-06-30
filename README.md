@@ -138,15 +138,18 @@ All configuration is done through environment variables (or a `.env` file). Ever
 | `AGENT_PROXY_PORT` | `8080` | Port the proxy server listens on |
 | `AGENT_WORKSPACE_DIR` | `/home/ubuntu/workspace` | Root directory the agent can access |
 | `AGENT_REQUIRE_APPROVAL` | `true` | Whether dangerous tools need user approval |
+| `AGENT_DANGEROUS_TOOLS` | `["shell_execute", "file_write", "file_edit", "file_delete", "run_tests"]` | List of tools that require approval |
 | `AGENT_MAX_AGENT_ITERATIONS` | `25` | Max tool-call loops before the agent stops |
 
 ### Example `.env`
 
 ```env
-AGENT_VLLM_BASE_URL=http://54.123.45.67:8080/v1
+# vLLM runs on port 8000 by default on your GPU server
+AGENT_VLLM_BASE_URL=http://54.123.45.67:8000/v1
 AGENT_VLLM_API_KEY=EMPTY
 AGENT_VLLM_MODEL=qwen3-coder-30b-awq4
 
+# The proxy listens on port 8080 locally
 AGENT_PROXY_HOST=0.0.0.0
 AGENT_PROXY_PORT=8080
 
@@ -347,14 +350,14 @@ Models that support `tools` parameter natively (e.g., via vLLM's tool calling su
 ```
 
 ### Format 3: Continue-style Blocks
-```
+````
 ```tool
 TOOL_NAME: readFile
 BEGIN_ARG: filePath
 src/main.py
 END_ARG
-```​
 ```
+````
 
 ### Format 4: Raw JSON
 ```json
