@@ -630,6 +630,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-**Built for developers who want AI coding assistance without sending their code to the cloud.** 🚀
 
-*Now with isolated sandbox testing for safer, more reliable code generation!* 🧪
+For more detials call me +91 9789995111 - available time 9 to 5 
