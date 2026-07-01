@@ -38,6 +38,19 @@ def parse_tool_calls_from_text(text: str) -> tuple[str, list[dict]]:
         if tool_calls:
             return clean_text, tool_calls
 
+    # Format 2b: Malformed Qwen (missing opening <tool_call>)
+    # Pattern: <function=name>...<parameter=key>value</parameter>...</function> OR </tool_call>
+    malformed_qwen_pattern = r"<function=([^>]+)>(.*?)(?:</function>|</tool_call>)"
+    malformed_matches = re.findall(malformed_qwen_pattern, text, re.DOTALL)
+    if malformed_matches:
+        for i, (func_name, params_text) in enumerate(malformed_matches):
+            tc = _parse_qwen_tool_call(f"<function={func_name}>{params_text}</function>", f"call_{i}")
+            if tc:
+                tool_calls.append(tc)
+        if tool_calls:
+            clean_text = re.sub(malformed_qwen_pattern, "", text, flags=re.DOTALL).strip()
+            return clean_text, tool_calls
+
     # Format 3: JSON code block ```json\n{...}\n```
     json_block_pattern = r"```(?:json)?\s*\n?(.*?)\n?```"
     json_matches = re.findall(json_block_pattern, text, re.DOTALL)

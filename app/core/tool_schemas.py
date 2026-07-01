@@ -140,4 +140,20 @@ TOOL_SCHEMAS = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "test_standalone_code",
+            "description": "REQUIRED tool for testing any NEW standalone Python code. Use this when the user asks to 'create a script', 'write a program', 'generate code', or requests any new standalone code (like fibonacci, calculators, API scripts, data processors, etc.). The code is automatically tested in an isolated sandbox environment with auto-retry on failure. User sees real-time testing progress. DO NOT just return code as text - always test it with this tool first.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "code": {"type": "string", "description": "The complete, executable Python code including all imports and a main section that runs/demonstrates the code"},
+                    "requirements": {"type": "string", "description": "Pip requirements, one per line (e.g., 'requests\\nflask\\nboto3'). Leave empty if no external dependencies needed."},
+                    "description": {"type": "string", "description": "Brief description of what this code does (e.g., 'Fibonacci calculator', 'GitHub API fetcher')"},
+                },
+                "required": ["code"],
+            },
+        },
+    },
 ]
